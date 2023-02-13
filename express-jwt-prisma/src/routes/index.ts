@@ -1,15 +1,14 @@
 // import type { Request, Response } from 'express';
-import express from 'express';
+import { Router } from 'express';
+import { authRouter, meRouter } from './api';
 
-export const routes = express.Router();
+const router = Router();
 
-routes.get('/', (req, res) => {
+router.get('/', (req, res) => {
   res.send('Root path');
 });
 
-// define the about route
-routes.get('/about', (req, res) => {
-  res.send('About path');
-});
+router.use('/auth', authRouter);
+router.use('/me', meRouter);
 
-export default routes;
+export default router;

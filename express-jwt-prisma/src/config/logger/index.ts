@@ -7,5 +7,15 @@ export const logger = pino({
       req.body = req.raw.body;
       return req;
     },
+    res(res) {
+      res.body = JSON.parse(res.raw.resBody);
+      return res;
+    },
+  },
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+    },
   },
 });

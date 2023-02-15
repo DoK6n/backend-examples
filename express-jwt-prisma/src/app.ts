@@ -6,20 +6,18 @@ import cors from 'cors';
 import router from './routes';
 import { logger } from './config/logger';
 import 'dotenv/config';
-import { loggingInterceptor } from './config/interceptors/loggingInterceptor';
+import { bodySender } from './middlewares/bodySender.interceptor';
 
 const app: Application = express();
 const PORT: number = 8001;
 
 app.use(cookieParser());
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
 
 app.use(cors());
 app.use(logger);
-app.use(loggingInterceptor);
+app.use(bodySender);
 
 app.use('/api', router);
 

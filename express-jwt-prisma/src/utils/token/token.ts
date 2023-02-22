@@ -9,7 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET ?? 'DevSecretKey';
 export const tokensDuration = {
   access_token: '1h',
   refresh_token: '30d',
-};
+} as const;
 
 /** 환경변수에 JWT_SECRET이 없을 경우 콘솔에 경고메시지 출력 */
 if (process.env.JWT_SECRET === undefined) {
@@ -36,7 +36,6 @@ export const setTokenCookie = (
 /** 새로운 토큰을 생성하는 함수 */
 export const generateToken = (payload: TokenPayload) =>
   new Promise<string>((resolve, reject) => {
-    const { type, ...rest } = payload; // type을 분리하고, 나머지는 토큰에 넣음
     /**
      * jwt.sign
      * payload - 주어진 페이로드를 JSON 웹 토큰 문자열 페이로드에 동기적으로 서명합니다. 서명할 페이로드는 리터럴, 버퍼 또는 문자열일 수 있습니다.
@@ -45,15 +44,13 @@ export const generateToken = (payload: TokenPayload) =>
      * callback? = 인코딩된 토큰을 가져오는 콜백
      */
     jwt.sign(
-      rest,
+      payload,
       JWT_SECRET,
       {
-        subject: type,
         expiresIn: tokensDuration[payload.type],
       },
       (error, encodedToken) => {
         if (error || !encodedToken) {
-          // 에러 처리
           reject(error);
           return;
         }
@@ -76,10 +73,8 @@ export const validateToken = <T>(token: string) =>
      */
     jwt.verify(token, JWT_SECRET, (error, decodedToken) => {
       if (error) {
-        // 에러처리
         reject(error);
       }
-      // 검증 통과시 resolve
       resolve(decodedToken as DecodedToken<T>);
     });
   });

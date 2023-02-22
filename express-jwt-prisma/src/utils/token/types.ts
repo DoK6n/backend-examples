@@ -18,4 +18,4 @@ export type TokenPayload = AccessTokenPayload | RefreshTokenPayload;
 export type DecodedToken<T> = {
   iat: number;
   exp: number;
-};
+} & T;

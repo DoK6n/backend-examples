@@ -1,0 +1,49 @@
+{
+  "name": "ioc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "clean": "rimraf dist",
+    "compile": "npm run format && npm run lint && tsc --pretty true --outDir dist --project .",
+    "build": "npm run compile",
+    "start": "ts-node --transpile-only src/main.ts",
+    "dev": "cross-env NODE_ENV=development ts-node-dev --respawn --pretty --transpile-only src/main.ts",
+    "prod": "npm run build && cross-env NODE_ENV=production env-cmd -f .env.production node dist/src/main.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "rimraf": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.9",
+    "@typescript-eslint/parser": "^5.59.9",
+    "cross-env": "^7.0.3",
+    "env-cmd": "^10.1.0",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "4.9.5"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "tabWidth": 2,
+    "endOfLine": "lf",
+    "quoteProps": "as-needed",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  }
+}
